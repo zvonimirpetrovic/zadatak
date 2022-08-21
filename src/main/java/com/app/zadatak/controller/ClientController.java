@@ -5,14 +5,20 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.zadatak.dto.ClientDto;
+import com.app.zadatak.model.Client;
 import com.app.zadatak.service.ClientService;  
 
 @RestController  
@@ -30,6 +36,7 @@ public class ClientController {
 	} 
 	
 	// Get all clients
+	@CrossOrigin
 	@GetMapping
 	public List<ClientDto> getAllClients(){  
 		return clientService.getAllClients()
@@ -38,51 +45,53 @@ public class ClientController {
 				.collect(Collectors.toList()); 
 	}  
 	
-//	// Get 1 client
-//	@GetMapping("/api/clients/{id}")  
-//	private ClientDto getClient(@PathVariable("id") int clientId){  
-//		return clientService.getClientById(clientId);  
-//	}  
+	// Get 1 client
+	@CrossOrigin
+	@GetMapping("/{id}")  
+	public  ResponseEntity<ClientDto> getClient(@PathVariable("id") int id){  
+		Client client = clientService.getClientById(id);  
+		
+		ClientDto clientDto = modelMapper.map(client, ClientDto.class);
+		return ResponseEntity.ok().body(clientDto);
+	}  
+	
+	// Create client
+	@CrossOrigin
+	@PostMapping
+	public ResponseEntity<ClientDto> createClient(@RequestBody ClientDto clientDto) {
+
+		// convert DTO to entity
+		Client clientReq = modelMapper.map(clientDto, Client.class);
+
+		Client client = clientService.createClient(clientReq);
+
+		// convert entity to DTO
+		ClientDto clientRes = modelMapper.map(client, ClientDto.class);
+
+		return new ResponseEntity<ClientDto>(clientRes, HttpStatus.CREATED);
+	}
+	
+	// Update client
+	@CrossOrigin
+	@PutMapping("/{id}")
+	public ResponseEntity<ClientDto> updatePost(@PathVariable int id, @RequestBody ClientDto clientDto) {
+
+		// convert DTO to Entity
+		Client clientReq = modelMapper.map(clientDto, Client.class);
+
+		Client client = clientService.updateClient(id, clientReq);
+
+		// entity to DTO
+		ClientDto clientRes = modelMapper.map(client, ClientDto.class);
+
+		return ResponseEntity.ok().body(clientRes);
+	}
 	
 	// Delete a client
-//	@DeleteMapping("/api/clients/{id}")  
-//	private ResponseEntity<String> deleteClient(@PathVariable("id") int clientid){  
-////		return clientService.deleteClient(clientid);  
-//	}  
-	////creating post mapping that post the book detail in the database  
-	//@PostMapping("/books")  
-	//private int saveBook(@RequestBody Books books)   
-	//{  
-	//booksService.saveOrUpdate(books);  
-	//return books.getBookid();  
-	//}  
-	////creating put mapping that updates the book detail   
-	//@PutMapping("/books")  
-	//private Books update(@RequestBody Books books)   
-	//{  
-	//booksService.saveOrUpdate(books);  
-	//return books;  
-	//}  
-	
-//    @PostMapping
-//    public ResponseEntity createClient(@RequestBody Client client) throws URISyntaxException {
-//        Client savedClient = clientRepository.save(client);
-//        return ResponseEntity.created(new URI("/clients/" + savedClient.getId())).body(savedClient);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public ResponseEntity updateClient(@PathVariable Long id, @RequestBody Client client) {
-//        Client currentClient = clientRepository.findById(id).orElseThrow(RuntimeException::new);
-//        currentClient.setName(client.getName());
-//        currentClient.setEmail(client.getEmail());
-//        currentClient = clientRepository.save(client);
-//
-//        return ResponseEntity.ok(currentClient);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deleteClient(@PathVariable Long id) {
-//        clientRepository.deleteById(id);
-//        return ResponseEntity.ok().build();
-//    }
+	@CrossOrigin
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deletePost(@PathVariable(name = "id") int id) {
+		clientService.deleteClient(id);
+		return new ResponseEntity<String>(HttpStatus.OK);
+	}
 }  
