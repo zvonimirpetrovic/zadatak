@@ -24,7 +24,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Client getClientById(int id) {
+	public Client getClientById(Integer id) {
 		Client client = clientRepository.findById(id).orElseThrow();
 		return client;
 	}
@@ -35,7 +35,7 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public Client updateClient(int id, Client client) {
+	public Client updateClient(Integer id, Client client) {
 		Client clientToUpdate = clientRepository.findById(id).orElseThrow();
 		
 		clientToUpdate.setName(client.getName());
@@ -49,9 +49,8 @@ public class ClientServiceImpl implements ClientService{
 	}
 
 	@Override
-	public void deleteClient(int id) {
+	public void deleteClient(Integer id) {
 		Client client = clientRepository.findById(id).orElseThrow();
 		clientRepository.delete(client);
 	}
-
 }

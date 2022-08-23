@@ -10,6 +10,8 @@ public class ClientDto{
 	private String country;
 	private String city;
 	private String street_name;
-	private int street_number;
-	private int zip;
+	private Integer street_number;
+	private Integer zip;
+//	private Number street_number;
+//	private Number zip;
 }

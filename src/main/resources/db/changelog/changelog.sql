@@ -19,7 +19,10 @@ CREATE TABLE Projects (
 	Project_manager VARCHAR(50) NOT NULL, 
 	Contact_email VARCHAR(50), 
 	Contact_number INT, 
-	Billing_address INT NOT NULL
+	Billing_address INT NOT NULL,
+	CONSTRAINT fk_Client
+      FOREIGN KEY(ClientId) 
+	  REFERENCES Clients(id)
 	)
 	
 -- changeset liquibase:3
@@ -32,4 +35,16 @@ SELECT
     'Street ' || n as street_name,
     n as street_number,
     n*1000 as zip
+ FROM generate_series(1, 100) as n
+ 
+ -- changeset liquibase:4
+INSERT INTO public.projects
+(name, clientid, project_manager, contact_email, contact_number, billing_address)
+SELECT  
+    'Project ' || n as name, 
+    floor(random() * 99 + 1)::int as Clientid,
+    'Project manager ' || n as project_manager,
+    'Contact email ' || n as contact_email,
+    n * floor(random() * 100000 + 1)::int as contact_number,
+    n as billing_address
  FROM generate_series(1, 100) as n

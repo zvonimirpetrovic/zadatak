@@ -1,17 +1,18 @@
 package com.app.zadatak.service;
 
-import com.app.zadatak.model.Client;
 import java.util.List;
+
+import com.app.zadatak.model.Client;
 
 public interface ClientService {
 
     List<Client> getAllClients();
     
-    Client getClientById(int id);
+    Client getClientById(Integer id);
     
     Client createClient(Client client);
     
-    Client updateClient(int id, Client client);
+    Client updateClient(Integer id, Client client);
     
-    void deleteClient(int id);
+    void deleteClient(Integer id);
 }

@@ -3,6 +3,8 @@ package com.app.zadatak.controller;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,9 +12,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,8 +74,9 @@ public class ClientController {
 	}
 	
 	// Update client
+	@Transactional
 	@CrossOrigin
-	@PutMapping("/{id}")
+	@PatchMapping("/{id}")
 	public ResponseEntity<ClientDto> updatePost(@PathVariable int id, @RequestBody ClientDto clientDto) {
 
 		// convert DTO to Entity

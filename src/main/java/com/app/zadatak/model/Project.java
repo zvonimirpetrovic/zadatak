@@ -16,8 +16,8 @@ import lombok.NonNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "clients")
-public class Client{
+@Table(name = "projects")
+public class Project{
 	
 	@Id  
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,31 +27,27 @@ public class Client{
 	@Column(name = "Name")
 	private String name;
 	
-	@NonNull
-	@Column(name = "Country")
-	private String country;
+	@Column(name = "Clientid")
+	private Integer client_id;
 	
 	@NonNull
-	@Column(name = "City")
-	private String city;
+	@Column(name = "Project_manager")
+	private String project_manager;
+	
+	@Column(name = "Contact_email")
+	private String contact_email;
+	
+	@Column(name = "Contact_number")
+	private Integer contact_number;
 	
 	@NonNull
-	@Column(name = "Street_name")
-	private String street_name;
+	@Column(name = "Billing_address")
+	private Integer billing_address;
 	
-	@NonNull
-	@Column(name = "Street_number")
-	private Integer street_number;
-	
-	@NonNull
-	@Column(name = "Zip")
-	private Integer zip;
-	
-//	@NonNull
-//	@Column(name = "Street_number")
-//	private Number street_number;
+//	@Column(name = "Contact_number")
+//	private Number contact_number;
 //	
 //	@NonNull
-//	@Column(name = "Zip")
-//	private Number zip;
+//	@Column(name = "Billing_address")
+//	private Number billing_address;
 }
